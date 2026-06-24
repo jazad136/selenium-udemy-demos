@@ -4,7 +4,8 @@ public class Main {
     // create two methods 'printName' and 'printAge'
     // pass name and age as parameters
     public static void main(String[] args) {
-        
+        System.out.println(getGreeting());
+        System.out.println(addNumbers(2,3));
     }
     public static void printName(String name) {
         System.out.println("Hello, " + name);
