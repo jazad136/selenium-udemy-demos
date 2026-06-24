@@ -4,6 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class SeleniumDemo {
+    /**
+     * Prints "Google" to the output
+     */
     public static void main(String[] args) {
         String chromeTitle = chromeTest("https://www.google.com/");
         System.out.println(chromeTitle);
