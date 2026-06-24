@@ -4,8 +4,12 @@ public class Main {
     // create two methods 'printName' and 'printAge'
     // pass name and age as parameters
     public static void main(String[] args) {
-        System.out.println(getGreeting());
-        System.out.println(addNumbers(2,3));
+        Calculator calculator = new Calculator();
+        int sum = calculator.add(10, 5);
+        System.out.println(sum);
+        
+        int difference = calculator.subtract(10,5);
+        System.out.println(difference);
     }
     public static void printName(String name) {
         System.out.println("Hello, " + name);
