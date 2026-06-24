@@ -10,7 +10,17 @@
         <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>Main</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.11.0-M2</version>    
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
     </build>
+    
 </project>
