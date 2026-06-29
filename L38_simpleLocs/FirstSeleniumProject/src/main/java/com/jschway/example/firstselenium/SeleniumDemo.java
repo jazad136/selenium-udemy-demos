@@ -12,7 +12,6 @@ import org.openqa.selenium.support.locators.RelativeLocator;
 public class SeleniumDemo {
     public static void main(String[] args) {
         WebDriver driver = new ChromeDriver();
-        
         driver.get("https://practicetestautomation.com/practice-test-login/");
         // WebElementLocators will be added here.
         try { 
@@ -34,6 +33,7 @@ public class SeleniumDemo {
             WebElement linkTextLocator = driver.findElement(By.linkText("Practice Test Automation."));
             WebElement passwordFieldBelowUsername = driver.findElement(RelativeLocator.with(By.tagName("input")).below(By.id("username")));
             WebElement privacyPolicyLink = driver.findElement(RelativeLocator.with(By.tagName("a")).toRightOf(By.partialLinkText("Test Automation")));
+            WebElement homeButton = driver.findElement(By.className("menu-item-home"));
         } catch(NoSuchElementException e) { 
             throw e;
         }
