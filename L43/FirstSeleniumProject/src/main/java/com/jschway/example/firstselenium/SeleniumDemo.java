@@ -87,24 +87,29 @@ public class SeleniumDemo {
         driver.get("https://practicetestautomation.com/practice-test-login/");
         try { 
             WebElement usernameInputField = driver.findElement(By.id("username"));
-            WebElement usernameInputFieldXpath = driver.findElement(By.xpath("//input[@id='username']"));
-            WebElement usernameInputFieldCss = driver.findElement(By.cssSelector("input[id='username']"));
-
+//            WebElement usernameInputFieldXpath = driver.findElement(By.xpath("//input[@id='username']"));
+//            WebElement usernameInputFieldCss = driver.findElement(By.cssSelector("input[id='username']"));
+            usernameInputField.sendKeys("anyUsername");
             WebElement passwordInputField = driver.findElement(By.name("password"));
-            WebElement passwordInputFieldXpath = driver.findElement(By.xpath("//input[@name='password']"));
-            WebElement passwordInputFieldCss = driver.findElement(By.cssSelector("input[name='password']"));
+            passwordInputField.sendKeys("anyPassword");
+//            WebElement passwordInputFieldXpath = driver.findElement(By.xpath("//input[@name='password']"));
+//            WebElement passwordInputFieldCss = driver.findElement(By.cssSelector("input[name='password']"));
 
             WebElement submitButton = driver.findElement(By.className("btn"));
-            WebElement submitButtonFieldXPath = driver.findElement(By.xpath("//button[@id='submit']"));
-            WebElement submitButtonFieldCss = driver.findElement(By.cssSelector("button[id='submit']"));
-            WebElement submitButtonFieldCss2 = driver.findElement(By.cssSelector("button[id='submit'][class='btn']"));
-            WebElement submitButtonFieldCss3 = driver.findElement(By.cssSelector("#submit.btn"));
+            submitButton.isDisplayed();
+            try{Thread.sleep(5000);}
+            catch(InterruptedException e) { }
+            submitButton.click();
+//            WebElement submitButtonFieldXPath = driver.findElement(By.xpath("//button[@id='submit']"));
+//            WebElement submitButtonFieldCss = driver.findElement(By.cssSelector("button[id='submit']"));
+//            WebElement submitButtonFieldCss2 = driver.findElement(By.cssSelector("button[id='submit'][class='btn']"));
+//            WebElement submitButtonFieldCss3 = driver.findElement(By.cssSelector("#submit.btn"));
 
-            List<WebElement> inputFields = driver.findElements(By.tagName("input"));
-            WebElement linkTextLocator = driver.findElement(By.linkText("Practice Test Automation."));
-            WebElement passwordFieldBelowUsername = driver.findElement(RelativeLocator.with(By.tagName("input")).below(By.id("username")));
-            WebElement privacyPolicyLink = driver.findElement(RelativeLocator.with(By.tagName("a")).toRightOf(By.partialLinkText("Test Automation")));
-            WebElement homeButton = driver.findElement(By.className("menu-item-home"));
+//            List<WebElement> inputFields = driver.findElements(By.tagName("input"));
+//            WebElement linkTextLocator = driver.findElement(By.linkText("Practice Test Automation."));
+//            WebElement passwordFieldBelowUsername = driver.findElement(RelativeLocator.with(By.tagName("input")).below(By.id("username")));
+//            WebElement privacyPolicyLink = driver.findElement(RelativeLocator.with(By.tagName("a")).toRightOf(By.partialLinkText("Test Automation")));
+//            WebElement homeButton = driver.findElement(By.className("menu-item-home"));
         } catch(NoSuchElementException e) { 
             throw e;
         }
