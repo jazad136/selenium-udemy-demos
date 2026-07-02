@@ -1,15 +1,9 @@
 package com.practicetestautomtation.tests.login;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -17,7 +11,8 @@ public class PositiveLoginTest {
     @Test
     public void testLoginFunctionality() {
         // Open page
-        WebDriver driver = new ChromeDriver();
+//        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         driver.get("https://practicetestautomation.com/practice-test-login/");
 
         // Type username student into Username field
@@ -46,11 +41,6 @@ public class PositiveLoginTest {
         
         // Verify button Log out is displayed on the new page
         WebElement logOutButton = driver.findElement(By.linkText("Log out"));
-//         Wait<WebDriver> wait = new FluentWait<>(driver)
-//                .withTimeout(Duration.of(10000, ChronoUnit.MILLIS))
-//                .pollingEvery(Duration.of(2000, ChronoUnit.MILLIS))
-//                .ignoring(NoSuchElementException.class);
-//        wait.until(ExpectedConditions.visibilityOf(logOutButton));
         Assert.assertTrue(logOutButton.isDisplayed());
         
         driver.quit();
