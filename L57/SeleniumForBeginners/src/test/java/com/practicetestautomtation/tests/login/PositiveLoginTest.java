@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PositiveLoginTests {
+public class PositiveLoginTest {
     @Test
     public void testLoginFunctionality() {
         // Open page
