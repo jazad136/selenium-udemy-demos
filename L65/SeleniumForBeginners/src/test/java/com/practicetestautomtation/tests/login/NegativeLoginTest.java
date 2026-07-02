@@ -2,12 +2,12 @@ package com.practicetestautomtation.tests.login;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -62,7 +62,8 @@ public class NegativeLoginTest {
     @Test
     public void incorrectPasswordTest() { 
         // Open page
-        WebDriver driver = new ChromeDriver();
+//        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new SafariDriver();
         driver.get("https://practicetestautomation.com/practice-test-login/");
         
         // Type username student into Username field
