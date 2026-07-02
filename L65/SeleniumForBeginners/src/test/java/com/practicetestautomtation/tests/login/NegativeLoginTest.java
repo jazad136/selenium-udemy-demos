@@ -1,18 +1,36 @@
 package com.practicetestautomtation.tests.login;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class NegativeLoginTest {
     
+    public Wait<WebDriver> setupWait(WebDriver driver) { 
+        return new FluentWait<>(driver)
+                .withTimeout(Duration.of(10000, ChronoUnit.MILLIS))
+                .pollingEvery(Duration.of(2000, ChronoUnit.MILLIS))
+                .ignoring(NoSuchElementException.class);
+    }
     @Test
     public void incorrectUsernameTest() { 
         // Open page
-        WebDriver driver = new ChromeDriver();
+        
+//        WebDriver driver = new ChromeDriver();
+        System.setProperty("webdriver.edge.driver","src/main/resources/msedgedriver.exe");
+        WebDriver driver = new EdgeDriver();
+        Wait<WebDriver> wait = setupWait(driver);
+
         driver.get("https://practicetestautomation.com/practice-test-login/");
         
         // Type username incorrectUser into Username field
@@ -30,6 +48,7 @@ public class NegativeLoginTest {
         //  Verify error message is displayed
         WebElement lblError = driver.findElement(By.id("error"));
 //        String pageSource = driver.getPageSource();
+        wait.until(ExpectedConditions.visibilityOf(lblError));
         Assert.assertTrue(lblError.isDisplayed());
         
         //  Verify error message text is Your username is invalid!
