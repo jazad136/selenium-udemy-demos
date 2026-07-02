@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Full Regression Suite" verbose="1">
+  <test name="Positive Login Tests">
+    <classes>
+       <class name="com.practicetestautomtation.tests.login.PositiveLoginTest"/>
+    </classes>
+  </test>
+
+  <test name="Negative Login Tests">
+    <classes>
+      <class name="com.practicetestautomtation.tests.login.NegativeLoginTest"/>
+    </classes>
+  </test>
+</suite>
+
