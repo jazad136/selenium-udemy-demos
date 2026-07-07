@@ -13,10 +13,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class LoginTest {
-    @Test
+    @Test(groups = {"positive", "regression", "smoke"})
     public void testLoginFunctionality() {
         // Open page
 //        WebDriver driver = new ChromeDriver();
@@ -61,8 +62,9 @@ public class LoginTest {
                 .ignoring(NoSuchElementException.class);
     }
     
-    @Test
-    public void incorrectUsernameTest() { 
+    @Parameters({"username", "password", "expectedErrorMessage"})
+    @Test(groups = {"negative", "regression"})
+    public void negativeLoginTest(String username, String password, String expectedErrorMessage) { 
         // Open page
         
 //        WebDriver driver = new ChromeDriver();
@@ -74,11 +76,11 @@ public class LoginTest {
         
         // Type username incorrectUser into Username field
         WebElement txtUsername = driver.findElement(By.id("username"));
-        txtUsername.sendKeys("incorrectUser");
+        txtUsername.sendKeys(username);
         
         // Type password Password123 into Password field
         WebElement txtPassword = driver.findElement(By.id("password"));
-        txtPassword.sendKeys("Password123");
+        txtPassword.sendKeys(password);
         
         //  Push Submit button
         WebElement btnSubmit = driver.findElement(By.id("submit"));
@@ -92,13 +94,13 @@ public class LoginTest {
         
         //  Verify error message text is Your username is invalid!
         String actualErrorMessage = lblError.getText();
-        String expectedErrorMessage = "Your username is invalid!";
+        
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
         
         driver.quit();
     }
     
-    @Test
+    @Test(groups = {"negative", "regression"})
     public void incorrectPasswordTest() { 
         // Open page
         WebDriver driver = new ChromeDriver();
