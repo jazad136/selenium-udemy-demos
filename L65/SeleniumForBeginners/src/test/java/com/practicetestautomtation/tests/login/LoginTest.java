@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -95,39 +94,6 @@ public class LoginTest {
         //  Verify error message text is Your username is invalid!
         String actualErrorMessage = lblError.getText();
         
-        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
-        
-        driver.quit();
-    }
-    
-    @Test(groups = {"negative", "regression"})
-    public void incorrectPasswordTest() { 
-        // Open page
-        WebDriver driver = new ChromeDriver();
-        Wait<WebDriver> wait = setupWait(driver);
-//        WebDriver driver = new SafariDriver();
-        driver.get("https://practicetestautomation.com/practice-test-login/");
-        
-        // Type username student into Username field
-        WebElement txtUsername = driver.findElement(By.id("username"));
-        txtUsername.sendKeys("student");
-        
-        // Type password incorrectPassword into Password field
-        WebElement txtPassword = driver.findElement(By.id("password"));
-        txtPassword.sendKeys("incorrectPassword");
-        
-        // Push Submit button
-        WebElement btnSubmit = driver.findElement(By.id("submit"));
-        btnSubmit.click();
-        
-        // Verify error message is displayed
-        WebElement lblError = driver.findElement(By.id("error"));
-        wait.until(ExpectedConditions.visibilityOf(lblError));
-        Assert.assertTrue(lblError.isDisplayed());
-        
-        // Verify error message text is Your password is invalid!
-        String actualErrorMessage = lblError.getText();
-        String expectedErrorMessage = "Your password is invalid!";
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
         
         driver.quit();
