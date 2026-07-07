@@ -6,23 +6,37 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class LoginTest {
+    
+    private WebDriver driver;
+    private Wait<WebDriver> wait;
+    @BeforeMethod(alwaysRun=true)
+    public void setUp() {
+        driver = new ChromeDriver();
+        wait = setupWait(driver);
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+    }
+    
+    @AfterMethod(alwaysRun=true)
+    public void tearDown() { 
+        driver.quit();
+    }
+    
     @Test(groups = {"positive", "regression", "smoke"})
     public void testLoginFunctionality() {
         // Open page
-//        WebDriver driver = new ChromeDriver();
-        WebDriver driver = new FirefoxDriver();
-        driver.get("https://practicetestautomation.com/practice-test-login/");
-
+        
         // Type username student into Username field
         WebElement usernameInput = driver.findElement(By.id("username"));
         usernameInput.sendKeys("student");
@@ -50,8 +64,6 @@ public class LoginTest {
         // Verify button Log out is displayed on the new page
         WebElement logOutButton = driver.findElement(By.linkText("Log out"));
         Assert.assertTrue(logOutButton.isDisplayed());
-        
-        driver.quit();
     }
     
     public Wait<WebDriver> setupWait(WebDriver driver) { 
@@ -68,10 +80,6 @@ public class LoginTest {
         
 //        WebDriver driver = new ChromeDriver();
         System.setProperty("webdriver.edge.driver","src/main/resources/msedgedriver.exe");
-        WebDriver driver = new EdgeDriver();
-        Wait<WebDriver> wait = setupWait(driver);
-
-        driver.get("https://practicetestautomation.com/practice-test-login/");
         
         // Type username incorrectUser into Username field
         WebElement txtUsername = driver.findElement(By.id("username"));
@@ -95,7 +103,5 @@ public class LoginTest {
         String actualErrorMessage = lblError.getText();
         
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
-        
-        driver.quit();
     }
 }
