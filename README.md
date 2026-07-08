@@ -1,4 +1,4 @@
-## Spring Batch Coding Demonstrations
+## Selenium Coding Demonstrations
 
 repo maintained by Jonathan A. Saddler, Ph. D. 
 
