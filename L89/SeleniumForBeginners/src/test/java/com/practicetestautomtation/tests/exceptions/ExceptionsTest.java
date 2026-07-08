@@ -10,7 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
@@ -43,7 +42,8 @@ public class ExceptionsTest {
             driver = new ChromeDriver();
      break;
         }
-        wait = setupWait(driver);
+//        wait = setupWait(driver);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         // Open page
         driver.get("https://practicetestautomation.com/practice-test-exceptions/");
     }
@@ -59,6 +59,9 @@ public class ExceptionsTest {
         // Click Add button
         WebElement addButton = driver.findElement(By.id("add_btn"));
         addButton.click();
+//        try { Thread.sleep(7000); } 
+//        catch(InterruptedException e) { }
+        
         // Verify Row 2 input field is displayed
         // throws no such element exception
 //        Assert.assertThrows(NoSuchElementException.class, () ->);
