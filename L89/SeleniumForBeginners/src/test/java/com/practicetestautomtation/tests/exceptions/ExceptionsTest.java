@@ -65,4 +65,19 @@ public class ExceptionsTest {
         // Verify Row 2 input field is displayed
         Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 input field is not displayed.");
     }
+    
+    @Test
+    public void testTimeoutException() { 
+        
+        // Click Add button
+        WebElement addButton = driver.findElement(By.id("add_btn"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        
+        // Wait for 3 seconds for the second input field to be displayed
+        addButton.click();
+        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
+        // Verify second input field is displayed
+        Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 input field is not displayed.");
+        // The second row shows up after about 5 seconds, so a 3-second timeout is not enough. That’s why we will get TimeoutException while executing steps in the above test case.
+    }
 }
