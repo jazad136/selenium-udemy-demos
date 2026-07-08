@@ -9,7 +9,8 @@
                     <!--<include name="testNoSuchElementException"/>-->
                     <!--<include name="testTimeoutException"/>-->
                     <!--<include name="testElementNotInteractibleException"/>-->
-                    <include name="testInvalidElementStateException"/>
+<!--                    <include name="testInvalidElementStateException"/>-->
+                    <include name="testStaleElementException"/>
                 </methods>
             </class>
         </classes>

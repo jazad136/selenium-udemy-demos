@@ -133,4 +133,15 @@ public class ExceptionsTest {
         WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
         Assert.assertEquals(successMessage.getText(), expectedText, "Row 1 was not saved. Label did not appear.");
     }
+    @Test
+    public void testStaleElementException() {
+        // Find the instructions text element
+        WebElement instructionsText = driver.findElement(By.id("instructions"));
+        
+        // Push add button
+        WebElement addButton = driver.findElement(By.id("add_btn"));
+        addButton.click();
+        // Verify instruction text element is no longer displayed
+        Assert.assertFalse(instructionsText.isDisplayed(), "Instructions text is still displayed.");
+    }
 }
