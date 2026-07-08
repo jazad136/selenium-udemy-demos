@@ -1,8 +1,6 @@
 package com.practicetestautomtation.tests.exceptions;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
@@ -11,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -71,13 +67,40 @@ public class ExceptionsTest {
         
         // Click Add button
         WebElement addButton = driver.findElement(By.id("add_btn"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         
         // Wait for 3 seconds for the second input field to be displayed
         addButton.click();
         WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
         // Verify second input field is displayed
         Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 input field is not displayed.");
-        // The second row shows up after about 5 seconds, so a 3-second timeout is not enough. That’s why we will get TimeoutException while executing steps in the above test case.
+        // The second row shows up after about 5 seconds, so a 3-second timeout is not enough. 
+        //That’s why we will get TimeoutException while executing steps in the above test case.
+    }
+    @Test
+    public void testElementNotInteractibleException() { 
+        WebElement addButton = driver.findElement(By.id("add_btn"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
+        
+        // Click Add button
+        addButton.click();
+        // Wait for the second row to load
+        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
+        
+        // Type text into the second input field
+        String inputText = "Hamburger";
+        row2InputField.sendKeys(inputText);
+        // Push Save button using locator By.name(“Save”)
+        WebElement saveButton = driver.findElement(By.name("Save"));
+        saveButton.click();
+        // Verify text saved
+        String expectedText = "Row 2 was saved";
+        WebElement confirmationLabel = driver.findElement(By.id("confirmation"));
+        Assert.assertEquals(confirmationLabel.getText(), expectedText, "Row 2 was not saved. Label did not appear.");
+
+        // This page contains two elements with attribute name=”Save”.
+        // The first one is invisible. So when we are trying to click on the invisible element, we get ElementNotInteractableException.
+
+        // The same action used to throw ElementNotVisibleException, but now it throws a different exception (not sure if it’s a bug in Selenium or a feature)
     }
 }
