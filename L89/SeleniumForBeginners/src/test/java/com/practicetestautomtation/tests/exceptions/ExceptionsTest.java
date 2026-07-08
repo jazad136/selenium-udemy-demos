@@ -10,8 +10,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -22,7 +24,6 @@ import org.testng.annotations.Test;
 public class ExceptionsTest {
     
     private WebDriver driver;
-    private Wait<WebDriver> wait;
     private Logger logger;
     
     @Parameters("browser")
@@ -43,8 +44,7 @@ public class ExceptionsTest {
      break;
         }
 //        wait = setupWait(driver);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        // Open page
+   // Open page
         driver.get("https://practicetestautomation.com/practice-test-exceptions/");
     }
     
@@ -58,21 +58,11 @@ public class ExceptionsTest {
     public void testNoSuchElementException() { 
         // Click Add button
         WebElement addButton = driver.findElement(By.id("add_btn"));
-        addButton.click();
-//        try { Thread.sleep(7000); } 
-//        catch(InterruptedException e) { }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         
+        addButton.click();
+        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
         // Verify Row 2 input field is displayed
-        // throws no such element exception
-//        Assert.assertThrows(NoSuchElementException.class, () ->);
-        WebElement row2Input = driver.findElement(By.xpath("//div[@id='row2']/input")); 
-        Assert.assertTrue(row2Input.isDisplayed(), "Row 2 input field is not displayed.");
-    }
-    
-    public Wait<WebDriver> setupWait(WebDriver driver) { 
-        return new FluentWait<>(driver)
-                .withTimeout(Duration.of(10000, ChronoUnit.MILLIS))
-                .pollingEvery(Duration.of(2000, ChronoUnit.MILLIS))
-                .ignoring(NoSuchElementException.class);
+        Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 input field is not displayed.");
     }
 }
