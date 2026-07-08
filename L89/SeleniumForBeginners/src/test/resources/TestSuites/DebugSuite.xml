@@ -8,7 +8,8 @@
                 <methods>
                     <!--<include name="testNoSuchElementException"/>-->
                     <!--<include name="testTimeoutException"/>-->
-                    <include name="testElementNotInteractibleException"/>
+                    <!--<include name="testElementNotInteractibleException"/>-->
+                    <include name="testInvalidElementStateException"/>
                 </methods>
             </class>
         </classes>

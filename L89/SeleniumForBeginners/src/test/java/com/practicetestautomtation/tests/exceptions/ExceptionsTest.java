@@ -91,16 +91,39 @@ public class ExceptionsTest {
         String inputText = "Hamburger";
         row2InputField.sendKeys(inputText);
         // Push Save button using locator By.name(“Save”)
-        WebElement saveButton = driver.findElement(By.name("Save"));
+        WebElement saveButton = driver.findElement(By.xpath("//div[@id='row2']/button[@name='Save']"));
         saveButton.click();
+//        WebElement successMessage = wait.until(ExpectedConditions(By.xpath("//div[@id='row2']/input")));
         // Verify text saved
         String expectedText = "Row 2 was saved";
-        WebElement confirmationLabel = driver.findElement(By.id("confirmation"));
-        Assert.assertEquals(confirmationLabel.getText(), expectedText, "Row 2 was not saved. Label did not appear.");
+        WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
+        Assert.assertEquals(successMessage.getText(), expectedText, "Row 2 was not saved. Label did not appear.");
 
         // This page contains two elements with attribute name=”Save”.
         // The first one is invisible. So when we are trying to click on the invisible element, we get ElementNotInteractableException.
 
         // The same action used to throw ElementNotVisibleException, but now it throws a different exception (not sure if it’s a bug in Selenium or a feature)
+    }
+    
+    @Test
+    public void testInvalidElementStateException() {
+        WebElement addButton = driver.findElement(By.id("add_btn"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
+        WebElement row1InputField = driver.findElement(By.xpath("//div[@id='row1']/input"));
+        // Clear input field
+        row1InputField.clear();
+
+        // The input field is disabled. Trying to clear the disabled field will throw InvalidElementStateException. We need to enable editing of the input field first by clicking the Edit button.
+        // If we try to type text into the disabled input field, we will get ElementNotInteractableException, as in Test case 2.
+        
+        // addl test: verify text field is empty
+        String newText = row1InputField.getText();
+        Assert.assertEquals(newText, "", "Row 1 input field is not empty");       
+        
+        // Type text into the input field
+        row1InputField.sendKeys("Hamburger");
+        String expectedText = "Row 1 was saved";
+        WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
+        Assert.assertEquals(successMessage.getText(), expectedText, "Row 1 was not saved. Label did not appear.");
     }
 }
