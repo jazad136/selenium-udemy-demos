@@ -107,10 +107,13 @@ public class ExceptionsTest {
     
     @Test
     public void testInvalidElementStateException() {
-        WebElement addButton = driver.findElement(By.id("add_btn"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
-        WebElement row1InputField = driver.findElement(By.xpath("//div[@id='row1']/input"));
+        // click Edit Button
+        WebElement row1EditButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit_btn")));
+        row1EditButton.click();
+        
         // Clear input field
+        WebElement row1InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row1']/input")));
         row1InputField.clear();
 
         // The input field is disabled. Trying to clear the disabled field will throw InvalidElementStateException. We need to enable editing of the input field first by clicking the Edit button.
@@ -122,6 +125,10 @@ public class ExceptionsTest {
         
         // Type text into the input field
         row1InputField.sendKeys("Hamburger");
+        
+        WebElement saveButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row1']/button[@name='Save']")));
+        saveButton.click();
+        
         String expectedText = "Row 1 was saved";
         WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
         Assert.assertEquals(successMessage.getText(), expectedText, "Row 1 was not saved. Label did not appear.");
