@@ -1,0 +1,6 @@
+nbactions.xml
+nb-configuration.xml
+src/main/resources/geckodriver.exe
+src/main/resources/msedgedriver.exe
+doesnotcompile/
+target/
