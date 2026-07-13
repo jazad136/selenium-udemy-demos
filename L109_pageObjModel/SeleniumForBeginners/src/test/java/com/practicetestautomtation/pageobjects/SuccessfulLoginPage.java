@@ -14,5 +14,7 @@ public class SuccessfulLoginPage extends BasePage {
     public String getPageSource() {  return driver.getPageSource(); }
     
     public boolean isLogoutButtonDisplayed() { return isDisplayed(logOutButtonLocator); }
-    
+    public void load() { 
+        waitForElement(logOutButtonLocator);
+    }
 }
