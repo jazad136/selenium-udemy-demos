@@ -82,36 +82,21 @@ public class LoginTest {
         // Type username student into Username field
         // Type password Password123 into Password field
         // Push Submit button
-//        WebElement usernameInput = driver.findElement(By.id("username"));
-//        WebElement passwordInput = driver.findElement(By.id("password"));
-//        WebElement submitButton = driver.findElement(By.id("submit"));
-//        logger.info("Type password");
-//        logger.info("Type username");
-//        usernameInput.sendKeys("student");
-//        passwordInput.sendKeys("Password123");
-//        logger.info("Click Submit button");
-//        submitButton.click();
         SuccessfulLoginPage successfulLoginPage = loginPage.executeLogin("student", "Password123");
         successfulLoginPage.load();
 
-//        try { Thread.sleep(2000); } 
-//        catch(InterruptedException e) { }
         loginReport.info("Type username, password, and click submit button");
         // Verify new page URL contains practicetestautomation.com/logged-in-successfully/
         String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
-//        String actualUrl = driver.getCurrentUrl();
         String actualUrl = successfulLoginPage.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl);
 
         // Verify new page contains expected text ('Congratulations' or 'successfully logged in')
         String expectedMessage = "Logged In Successfully";
-//        String pageSource = driver.getPageSource();
         String pageSource = successfulLoginPage.getPageSource();
         Assert.assertTrue(pageSource.contains(expectedMessage));
         
         // Verify button Log out is displayed on the new page
-//        WebElement logOutButton = driver.findElement(By.linkText("Log out"));
-//        Assert.assertTrue(logOutButton.isDisplayed());
         Assert.assertTrue(successfulLoginPage.isLogoutButtonDisplayed());
         loginReport.info("Verify the login functionality");
     }
