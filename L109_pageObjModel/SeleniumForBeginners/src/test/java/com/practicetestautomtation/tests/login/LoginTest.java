@@ -1,5 +1,9 @@
 package com.practicetestautomtation.tests.login;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
@@ -16,32 +20,41 @@ import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
 public class LoginTest {
-    
     private WebDriver driver;
     private Wait<WebDriver> wait;
     private Logger logger;
+    ExtentReports extent;
+    
+    @BeforeSuite(alwaysRun=true)
+    public void setUpSuite() { 
+        extent = new ExtentReports();
+        final File CONF = new File("src/test/resources/ExtentConfigs/extentConfig.xml");
+        extent.attachReporter(new ExtentSparkReporter("extent-reports-output.html"));
+    }
+    
     
     @Parameters("browser")
     @BeforeMethod(alwaysRun=true)
     public void setUp(@Optional("chrome") String browser) {
+        ExtentTest setup = extent.createTest("setUp steps");
         logger = Logger.getLogger(LoginTest.class.getName());
         logger.setLevel(Level.INFO);
         
-        logger.info("Running test in " + browser);
+        setup.info("Running test in " + browser);
         switch (browser.toLowerCase()) {
             case "chrome": 
                 driver = new ChromeDriver();
      break; case "firefox":
                 driver = new FirefoxDriver();
      break; default: 
-            logger.warning("Configuration for " + browser + " is missing, so running tests in Chrome by default.");
+            setup.warning("Configuration for " + browser + " is missing, so running tests in Chrome by default.");
             driver = new ChromeDriver();
-     break;
+        break;
         }
         wait = setupWait(driver);
         // Open page
@@ -56,24 +69,26 @@ public class LoginTest {
     
     @Test(groups = {"positive", "regression", "smoke"})
     public void testLoginFunctionality() {
-        logger.info("Starting testLoginFunctionality");
+        ExtentTest loginTest = extent.createTest("testLoginFunctionality");
+        
+        loginTest.info("Starting testLoginFunctionality");
         // Type username student into Username field
         WebElement usernameInput = driver.findElement(By.id("username"));
-        logger.info("Type username");
+        loginTest.info("Type username");
         usernameInput.sendKeys("student");
 
         // Type password Password123 into Password field
         WebElement passwordInput = driver.findElement(By.id("password"));
-        logger.info("Type password");
+        loginTest.info("Type password");
         passwordInput.sendKeys("Password123");
 
         // Push Submit button
         WebElement submitButton = driver.findElement(By.id("submit"));
-        logger.info("Click Submit button");
+        loginTest.info("Click Submit button");
         submitButton.click();
         try { Thread.sleep(2000); } 
         catch(InterruptedException e) { }
-        logger.info("Verify the login functionality");
+        loginTest.info("Verify the login functionality");
         // Verify new page URL contains practicetestautomation.com/logged-in-successfully/
         String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
         String actualUrl = driver.getCurrentUrl();
