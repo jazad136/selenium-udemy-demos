@@ -1,5 +1,7 @@
 package com.practicetestautomtation.tests.login;
 
+import com.practicetestautomtation.pageobjects.LoginPage;
+import com.practicetestautomtation.pageobjects.SuccessfulLoginPage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
@@ -23,7 +25,6 @@ import org.testng.annotations.Test;
 public class LoginTest {
     
     private WebDriver driver;
-    private Wait<WebDriver> wait;
     private Logger logger;
     
     @Parameters("browser")
@@ -43,9 +44,6 @@ public class LoginTest {
             driver = new ChromeDriver();
      break;
         }
-        wait = setupWait(driver);
-        // Open page
-        driver.get("https://practicetestautomation.com/practice-test-login/");
     }
     
     @AfterMethod(alwaysRun=true)
@@ -56,37 +54,45 @@ public class LoginTest {
     
     @Test(groups = {"positive", "regression", "smoke"})
     public void testLoginFunctionality() {
+        // Open page
         logger.info("Starting testLoginFunctionality");
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.visit();
+        
         // Type username student into Username field
-        WebElement usernameInput = driver.findElement(By.id("username"));
-        logger.info("Type username");
-        usernameInput.sendKeys("student");
-
         // Type password Password123 into Password field
-        WebElement passwordInput = driver.findElement(By.id("password"));
-        logger.info("Type password");
-        passwordInput.sendKeys("Password123");
-
         // Push Submit button
-        WebElement submitButton = driver.findElement(By.id("submit"));
-        logger.info("Click Submit button");
-        submitButton.click();
-        try { Thread.sleep(2000); } 
-        catch(InterruptedException e) { }
+//        WebElement usernameInput = driver.findElement(By.id("username"));
+//        WebElement passwordInput = driver.findElement(By.id("password"));
+//        WebElement submitButton = driver.findElement(By.id("submit"));
+//        logger.info("Type password");
+//        logger.info("Type username");
+//        usernameInput.sendKeys("student");
+//        passwordInput.sendKeys("Password123");
+//        logger.info("Click Submit button");
+//        submitButton.click();
+        SuccessfulLoginPage successfulLoginPage = loginPage.executeLogin("student", "Password123");
+        successfulLoginPage.load();
+
+//        try { Thread.sleep(2000); } 
+//        catch(InterruptedException e) { }
         logger.info("Verify the login functionality");
         // Verify new page URL contains practicetestautomation.com/logged-in-successfully/
         String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
-        String actualUrl = driver.getCurrentUrl();
+//        String actualUrl = driver.getCurrentUrl();
+        String actualUrl = successfulLoginPage.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl);
 
         // Verify new page contains expected text ('Congratulations' or 'successfully logged in')
         String expectedMessage = "Logged In Successfully";
-        String pageSource = driver.getPageSource();
+//        String pageSource = driver.getPageSource();
+        String pageSource = successfulLoginPage.getPageSource();
         Assert.assertTrue(pageSource.contains(expectedMessage));
         
         // Verify button Log out is displayed on the new page
-        WebElement logOutButton = driver.findElement(By.linkText("Log out"));
-        Assert.assertTrue(logOutButton.isDisplayed());
+//        WebElement logOutButton = driver.findElement(By.linkText("Log out"));
+//        Assert.assertTrue(logOutButton.isDisplayed());
+        Assert.assertTrue(successfulLoginPage.isLogoutButtonDisplayed());
     }
     
     public Wait<WebDriver> setupWait(WebDriver driver) { 
@@ -121,7 +127,7 @@ public class LoginTest {
         WebElement lblError = driver.findElement(By.id("error"));
         
         logger.info(String.format("Verify the expected error message: %s", expectedErrorMessage));
-        wait.until(ExpectedConditions.visibilityOf(lblError));
+//        wait.until(ExpectedConditions.visibilityOf(lblError));
         Assert.assertTrue(lblError.isDisplayed());
         
         //  Verify error message text is Your username is invalid!

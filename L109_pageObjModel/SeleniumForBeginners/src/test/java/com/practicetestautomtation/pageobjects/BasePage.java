@@ -18,6 +18,7 @@ public class BasePage {
     }
     public String getCurrentUrl() { return driver.getCurrentUrl(); }
     public String getPageSource() { return driver.getPageSource(); } 
+    protected void visit(String url) { driver.get(url); }
     
     public WebElement waitForElement(By locator) { 
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
