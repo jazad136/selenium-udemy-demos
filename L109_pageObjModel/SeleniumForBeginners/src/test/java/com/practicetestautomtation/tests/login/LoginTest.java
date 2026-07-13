@@ -114,6 +114,7 @@ public class LoginTest {
 //        WebElement logOutButton = driver.findElement(By.linkText("Log out"));
 //        Assert.assertTrue(logOutButton.isDisplayed());
         Assert.assertTrue(successfulLoginPage.isLogoutButtonDisplayed());
+        extent.flush();
     }
     
     public Wait<WebDriver> setupWait(WebDriver driver) { 

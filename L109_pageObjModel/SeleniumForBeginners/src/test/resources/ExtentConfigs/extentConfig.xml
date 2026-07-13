@@ -9,7 +9,7 @@
     <encoding>UTF-8</encoding>
 
     <!-- protocol for script and stylesheets -->
-    <!-- defaults to https --
+    <!-- defaults to https -->
     <!-- HTTP, HTTPS -->
     <protocol>HTTPS</protocol>
 
