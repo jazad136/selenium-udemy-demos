@@ -8,6 +8,7 @@
         <parameter name="username" value="incorrectUser"></parameter>
         <parameter name="password" value="Password123"></parameter>
         <parameter name="expectedErrorMessage" value="Your username is invalid!"></parameter>
+        <parameter name="testName" value="incorrect-user"></parameter>
         <classes>
             <class name="com.practicetestautomtation.tests.login.LoginTest">
                 <methods>
@@ -21,6 +22,7 @@
         <parameter name="username" value="student"></parameter>
         <parameter name="password" value="incorrectPassword"></parameter>
         <parameter name="expectedErrorMessage" value="Your password is invalid!"></parameter>
+        <parameter name="testName" value="incorrect-password"></parameter>
         <classes>
             <class name="com.practicetestautomtation.tests.login.LoginTest">
                 <methods>

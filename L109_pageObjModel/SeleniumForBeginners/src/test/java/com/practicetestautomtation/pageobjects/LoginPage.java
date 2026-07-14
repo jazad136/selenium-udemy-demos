@@ -39,4 +39,6 @@ public class LoginPage extends BasePage {
         WebElement errorMessageElement = waitForElement(errorMessageLocator);
         return errorMessageElement.getText();
     }
+    
+    public boolean isErrorMessageDisplayed() { return isDisplayed(errorMessageLocator); }
 }
