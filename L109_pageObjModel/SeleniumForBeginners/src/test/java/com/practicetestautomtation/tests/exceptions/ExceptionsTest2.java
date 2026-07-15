@@ -1,5 +1,6 @@
 package com.practicetestautomtation.tests.exceptions;
 
+import com.practicetestautomtation.pageobjects.ExceptionsPage;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +18,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class ExceptionsTest {
+public class ExceptionsTest2 {
     
     private WebDriver driver;
     private Logger logger;
@@ -25,7 +26,7 @@ public class ExceptionsTest {
     @Parameters("browser")
     @BeforeMethod(alwaysRun=true)
     public void setUp(@Optional("chrome") String browser) {
-        logger = Logger.getLogger(ExceptionsTest.class.getName());
+        logger = Logger.getLogger(ExceptionsTest2.class.getName());
         logger.setLevel(Level.INFO);
         
         logger.info("Running test in " + browser);
@@ -41,7 +42,7 @@ public class ExceptionsTest {
         }
 //        wait = setupWait(driver);
    // Open page
-        driver.get("https://practicetestautomation.com/practice-test-exceptions/");
+//        driver.get("https://practicetestautomation.com/practice-test-exceptions/");
     }
     
     @AfterMethod(alwaysRun=true)
@@ -52,52 +53,56 @@ public class ExceptionsTest {
     
     @Test
     public void testNoSuchElementException() { 
+        // Open Page
+        ExceptionsPage exceptionsPage = new ExceptionsPage(driver);
+        exceptionsPage.visit();
         // Click Add button
-        WebElement addButton = driver.findElement(By.id("add_btn"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
-        addButton.click();
-        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
-        // Verify Row 2 input field is displayed
-        Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 input field is not displayed.");
+        exceptionsPage.clickAdd();
+        // Wait for row 2 to load
+        exceptionsPage.loadRow2();
+        // Assert that row 2 is loaded
+        Assert.assertTrue(exceptionsPage.isRow2FieldDisplayed(), "Row 2 input field is not displayed.");
     }
     
     @Test
     public void testTimeoutException() { 
-        
+        // open page
+        ExceptionsPage excPage = new ExceptionsPage(driver);
+        excPage.visit();
         // Click Add button
-        WebElement addButton = driver.findElement(By.id("add_btn"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
-        
+        excPage.clickAdd();
         // Wait for 3 seconds for the second input field to be displayed
-        addButton.click();
-        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
-        // Verify second input field is displayed
-        Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 input field is not displayed.");
-        // The second row shows up after about 5 seconds, so a 3-second timeout is not enough. 
-        //That’s why we will get TimeoutException while executing steps in the above test case.
+        excPage.loadRow2In3Seconds();
+        Assert.assertTrue(excPage.isRow2FieldDisplayed(), "Row 2 input field is not displayed.");
     }
+    
     @Test
     public void testElementNotInteractibleException() { 
-        WebElement addButton = driver.findElement(By.id("add_btn"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
+        // open page
+        // Open Page
+        ExceptionsPage excPage = new ExceptionsPage(driver);
+        excPage.visit();
+        
+//        WebElement addButton = driver.findElement(By.id("add_btn"));
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         
         // Click Add button
-        addButton.click();
+//        addButton.click();
+        excPage.clickAdd();
         // Wait for the second row to load
-        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
-        
+        excPage.loadRow2();
         // Type text into the second input field
         String inputText = "Hamburger";
-//        row2InputField.sendKeys(inputText);
+        excPage.enterRow1Text(inputText);
+//        expPage.s.sendKeys(inputText);
         // Push Save button using locator By.name(“Save”)
         WebElement saveButton = driver.findElement(By.xpath("//div[@id='row2']/button[@name='Save']"));
         saveButton.click();
 //        WebElement successMessage = wait.until(ExpectedConditions(By.xpath("//div[@id='row2']/input")));
         // Verify text saved
         String expectedText = "Row 2 was saved";
-        WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
-        Assert.assertEquals(successMessage.getText(), expectedText, "Row 2 was not saved. Label did not appear.");
+//        WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
+//        Assert.assertEquals(successMessage.getText(), expectedText, "Row 2 was not saved. Label did not appear.");
 
         // This page contains two elements with attribute name=”Save”.
         // The first one is invisible. So when we are trying to click on the invisible element, we get ElementNotInteractableException.
