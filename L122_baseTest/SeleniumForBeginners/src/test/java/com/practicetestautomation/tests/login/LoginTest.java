@@ -1,13 +1,11 @@
 package com.practicetestautomation.tests.login;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
 import com.practicetestautomation.pageobjects.LoginPage;
 import com.practicetestautomation.pageobjects.SuccessfulLoginPage;
+import com.practicetestautomation.tests.BaseTest;
 import com.practicetestautomation.testsetup.ExtentReportManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
@@ -17,12 +15,8 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class LoginTest {
+public class LoginTest extends BaseTest {
     
-    private WebDriver driver;
-    private Logger logger;
-    private ExtentReports extent;
-    private ExtentTest loginReport;
     
     
     @Parameters("browser")
@@ -43,7 +37,7 @@ public class LoginTest {
      break;
         }
         extent = ExtentReportManager.getReporter();
-        loginReport = extent.createTest("Login Test");
+        testReport = extent.createTest("Login Test");
     }
     
     @AfterMethod(alwaysRun=true)
@@ -60,7 +54,7 @@ public class LoginTest {
     public void testLoginFunctionality() {
 //        ExtentTest loginReport = extent.createTest("testLoginFunctionality");
         // Open page
-        loginReport.info("Starting testLoginFunctionality");
+        testReport.info("Starting testLoginFunctionality");
         LoginPage loginPage = new LoginPage(driver);
         loginPage.visit();
         
@@ -68,7 +62,7 @@ public class LoginTest {
         // Type password Password123 into Password field
         // Push Submit button
         
-        loginReport.info("Type username, password, and click submit button");
+        testReport.info("Type username, password, and click submit button");
         SuccessfulLoginPage successfulLoginPage = loginPage.executeLogin("student", "Password123");
         successfulLoginPage.load();
 
@@ -79,8 +73,8 @@ public class LoginTest {
         
         // Verify button Log out is displayed on the new page
         Assert.assertTrue(successfulLoginPage.isLogoutButtonDisplayed());
-        loginReport.info("Verify the login functionality");
-        loginReport.pass("Test passed...");
+        testReport.info("Verify the login functionality");
+        testReport.pass("Test passed...");
         extent.flush();
     }
     @Parameters({"username", "password", "expectedErrorMessage", "testName"})
@@ -88,20 +82,20 @@ public class LoginTest {
     public void negativeLoginTest(String username, String password, String expectedErrorMessage, String testName) {
 //        ExtentTest loginReport = extent.createTest("negativeLoginTest-"+testName);
         // Open page
-        loginReport.info("Starting negativeLoginTest");
+        testReport.info("Starting negativeLoginTest");
         LoginPage loginPage = new LoginPage(driver);
         loginPage.visit();
         
         // Type username incorrectUser into Username field        
         // Type password Password123 into Password field
         //  Push Submit button
-        loginReport.info("Type username, password, and click submit button");
+        testReport.info("Type username, password, and click submit button");
         loginPage.executeLogin(username, password);
         
         //  Verify error message is displayed
         //  Verify error message text is Your username is
         Assert.assertEquals(loginPage.getErrorMessage(), expectedErrorMessage);
-        loginReport.pass("Test passed...");
+        testReport.pass("Test passed...");
         extent.flush();
     }
 }
