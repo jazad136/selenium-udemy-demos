@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Debug Suite" verbose="1">
+    <test name="Debug Tests">
+        <classes>
+            <class name="com.practicetestautomation.tests.exceptions.ExceptionsTest">
+                <methods>
+                    <!--<include name="testNoSuchElementException"/>-->
+                    <!--<include name="testTimeoutException"/>-->
+                    <!--<include name="testElementNotInteractibleException"/>-->
+<!--                    <include name="testInvalidElementStateException"/>-->
+                    <include name="testStaleElementException"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
+
