@@ -24,6 +24,10 @@ public class BasePage {
     public WebElement waitForElement(By locator) { 
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+    private WebElement waitForElementByDuration(By locator, Duration byDuration) {
+        WebDriverWait customWait = new WebDriverWait(driver, byDuration);
+        return customWait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
     
     /** 
      * If timeout is reached before element identified by locator is 
@@ -36,6 +40,38 @@ public class BasePage {
     public boolean waitForIsDisplayed(By locator) { 
         try { 
             waitForElement(locator);
+            return true;
+        } catch(TimeoutException te) { 
+            return false;
+        }
+    }
+    public boolean waitForIsHidden(By locator) { 
+        try { 
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+            return true;   
+        } catch(TimeoutException te) { 
+            return false;
+        }
+    }
+    public boolean waitForIsInvisible(By locator) { 
+        try { 
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+            return true;
+        } catch(TimeoutException te) { 
+            return false;
+        }
+    }
+    public boolean waitForIsInvisible(By locator, int durationSeconds) { 
+        try { 
+            WebDriverWait customWait = new WebDriverWait(driver, Duration.ofSeconds(durationSeconds));
+            return customWait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+        } catch(TimeoutException te) { 
+            return false;
+        }
+    }
+    public boolean waitForIsDisplayed(By locator, int durationSeconds) { 
+        try { 
+            waitForElementByDuration(locator, Duration.ofSeconds(durationSeconds));
             return true;
         } catch(TimeoutException te) { 
             return false;

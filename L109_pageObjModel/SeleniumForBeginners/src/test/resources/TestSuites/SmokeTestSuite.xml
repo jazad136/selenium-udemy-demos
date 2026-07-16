@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="Smoke Test Suite" verbose="1">
-    <test name="Login Tests">
-        <groups>
-            <run>
-                <include name="smoke"></include>
-            </run>
-        </groups>
+<suite name="Exception Test Suite" verbose="1">
+    <test name="Exception Tests in Chrome">
         <classes>
-            <class name="com.practicetestautomtation.tests.login.LoginTest"/>
+            <class name="com.practicetestautomtation.tests.exceptions.ExceptionsTest3">
+                <methods>
+                    <include name="testLoginFunctionality"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Positive Login Tests Firefox">
+        <classes>
+            <class name="com.practicetestautomtation.tests.login.LoginTest">
+                <methods>
+                    <include name="testLoginFunctionality"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

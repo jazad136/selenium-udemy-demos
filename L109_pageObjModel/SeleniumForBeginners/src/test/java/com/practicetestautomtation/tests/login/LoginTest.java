@@ -2,11 +2,9 @@ package com.practicetestautomtation.tests.login;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.practicetestautomtation.pageobjects.LoginPage;
 import com.practicetestautomtation.pageobjects.SuccessfulLoginPage;
-import java.io.File;
-import java.io.IOException;
+import com.practicetestautomtation.testsetup.ExtentReportManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.WebDriver;
@@ -14,8 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -25,21 +21,9 @@ public class LoginTest {
     
     private WebDriver driver;
     private Logger logger;
-    ExtentReports extent;
+    private ExtentReports extent;
+    private ExtentTest loginReport;
     
-    @BeforeClass(alwaysRun=true)
-    public void setUpSuite()  { 
-        extent = new ExtentReports();
-//        final File CONF = new File("src/test/resources/ExtentConfigs/extentConfig.xml");
-        final File CONF = new File("src/test/resources/ExtentConfigs/extentConfig.xml");
-        ExtentSparkReporter spark = new ExtentSparkReporter("xml-config-report.html");
-        try { 
-            spark.loadXMLConfig(CONF);
-        } catch(IOException e) { 
-            throw new RuntimeException("Could not set up suite with XML configuration at src/main/resources/extentConfig.xml");
-        }
-        extent.attachReporter(spark);
-    }
     
     @Parameters("browser")
     @BeforeMethod(alwaysRun=true)
@@ -58,6 +42,8 @@ public class LoginTest {
             driver = new ChromeDriver();
      break;
         }
+        extent = ExtentReportManager.getReporter();
+        loginReport = extent.createTest("Login Test");
     }
     
     @AfterMethod(alwaysRun=true)
@@ -72,7 +58,7 @@ public class LoginTest {
     
     @Test(groups = {"positive", "regression", "smoke"})
     public void testLoginFunctionality() {
-        ExtentTest loginReport = extent.createTest("testLoginFunctionality");
+//        ExtentTest loginReport = extent.createTest("testLoginFunctionality");
         // Open page
         loginReport.info("Starting testLoginFunctionality");
         LoginPage loginPage = new LoginPage(driver);
@@ -97,18 +83,10 @@ public class LoginTest {
         loginReport.pass("Test passed...");
         extent.flush();
     }
-    
-//    public Wait<WebDriver> setupWait(WebDriver driver) { 
-//        return new FluentWait<>(driver)
-//                .withTimeout(Duration.of(10000, ChronoUnit.MILLIS))
-//                .pollingEvery(Duration.of(2000, ChronoUnit.MILLIS))
-//                .ignoring(NoSuchElementException.class);
-//    }
- 
     @Parameters({"username", "password", "expectedErrorMessage", "testName"})
     @Test(groups = {"negative", "regression"})
     public void negativeLoginTest(String username, String password, String expectedErrorMessage, String testName) {
-        ExtentTest loginReport = extent.createTest("negativeLoginTest-"+testName);
+//        ExtentTest loginReport = extent.createTest("negativeLoginTest-"+testName);
         // Open page
         loginReport.info("Starting negativeLoginTest");
         LoginPage loginPage = new LoginPage(driver);
