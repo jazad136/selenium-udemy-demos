@@ -47,4 +47,20 @@ public class BaseTest {
         driver.quit();
         logger.info("Browser is closed");
     }
+    public void info(String msg) { 
+        System.out.println(msg);
+        testReport.info(msg);
+    }
+    public void pass(String msg) { 
+        System.out.println(msg);
+        testReport.pass(msg);
+    }
+    public void fail(String msg) { 
+        System.out.println(msg);
+        testReport.fail(msg);
+    }
+    public void skip(String msg) { 
+        System.out.println(msg);
+        testReport.skip(msg);
+    }
 }
