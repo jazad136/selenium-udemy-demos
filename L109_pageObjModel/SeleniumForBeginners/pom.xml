@@ -11,7 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>com.jschway.example.firstselenium.SeleniumDemo</exec.mainClass>
-        <suiteXmlFile>FullRegressionSuite.xml</suiteXmlFile>
+        <suiteXmlFile>FullRegressionSuite</suiteXmlFile>
     </properties>
     <dependencies>
         <dependency>
@@ -31,17 +31,17 @@
         </dependency>
     </dependencies>
     <build>
-   <plugins>
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>src/test/resources/TestSuites/${suiteXmlFile}</suiteXmlFile>
+            <suiteXmlFile>src/test/resources/TestSuites/${suiteXmlFile}.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
-</plugins>
+    </plugins>
     </build>
 </project>
