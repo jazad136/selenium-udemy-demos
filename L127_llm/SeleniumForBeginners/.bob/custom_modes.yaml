@@ -44,10 +44,6 @@ customModes:
         SuccessfulLoginPage - post-login; load(), isLogoutButtonDisplayed
         ExceptionsPage   - exceptions demo; uses a custom 3-second WebDriverWait
                           (the only legitimate reason to add a WebDriverWait field)
-        PracticeTablePage - table with JS filters; uses static final locators,
-                           dynamic locator methods, getVisibleRows, getCellText,
-                           getEnrollments, private waitForFilterToApply helper
-
       --- RULES YOU MUST ENFORCE ---
 
       1. CLASS DECLARATION
@@ -82,7 +78,7 @@ customModes:
          - Use BasePage helpers exclusively -- never create a raw WebDriverWait unless
            the page needs a timeout other than 10 seconds.
          - Do not expose WebElement to test classes except when returning a
-           List<WebElement> for row iteration (as in PracticeTablePage).
+           List<WebElement> for row iteration in a multi-row table page.
 
       7. ASYNC HELPERS
          - After triggering a filter, sort, or AJAX update, add a private
@@ -99,7 +95,7 @@ customModes:
 
       9. JAVADOC
          - Add a class-level Javadoc for pages with non-obvious structure (tables,
-           filters, dynamic IDs). Use PracticeTablePage as the model.
+           filters, dynamic IDs).
          - Add single-line Javadoc on public methods whose purpose is not obvious
            from the name alone.
 
@@ -167,16 +163,11 @@ customModes:
         exceptions/ExceptionsTest  - exception scenarios; clean version using BasePage wait
                                      helpers; no groups declared (legacy gap to be aware of)
         exceptions/ExceptionsTest2 - older verbose version, kept for comparison
-        table/PracticeTableTest    - table/filter tests; tc<N>_ prefix naming; groups
-                                     declared as {"smoke", "table"}
-
-
       Suite XML files in src/test/resources/TestSuites/:
         FullRegressionSuite.xml  - default suite; every new test class must appear here
         NegativeTestSuite.xml    - negative login only; browser via @parameter
         SmokeTestSuite.xml       - smoke group filter
         ExceptionsTestSuite.xml  - exceptions tests by method list
-        TableTestSuite.xml       - table tests by class
         DebugSuite.xml           - single-method debug runs; comment/uncomment as needed
 
 

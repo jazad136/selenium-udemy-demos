@@ -96,7 +96,7 @@ public void visit() {
 | Clear then type (replace text) | `WebElement el = waitForElement(locator); el.clear(); el.sendKeys(text);` |
 
 - **Do not expose `WebElement` objects to test classes** unless the test must iterate over a
-  collection of rows (as in `PracticeTablePage.getVisibleRows()`).
+  collection of rows in a multi-row table page.
 - For multi-row table pages, provide `List<WebElement> getVisibleRows()` and
   `String getCellText(WebElement row, String colName)` helpers so tests never call
   `driver.findElement` directly.
@@ -139,7 +139,7 @@ Never import `ChromeDriver`, `FirefoxDriver`, test annotations (`@Test`, `@Befor
 ## 9. Javadoc
 
 - Add a class-level Javadoc comment on any page with non-obvious page structure (columns, filters,
-  dynamic IDs). See `PracticeTablePage` as a model.
+  dynamic IDs).
 - Add single-line Javadoc (`/** … */`) on public methods whose purpose is not self-evident from the
   method name.
 
