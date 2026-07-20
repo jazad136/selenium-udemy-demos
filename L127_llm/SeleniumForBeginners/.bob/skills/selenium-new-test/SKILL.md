@@ -1,6 +1,6 @@
 ---
 name: selenium-new-test
-description: Use when the user wants to create, add, or scaffold a new Selenium/TestNG test or page object in this project. Guides through creating the page object, test class, registering TestNG groups, and updating the relevant test suite XML files.
+description: Use when the user wants to create, add, or scaffold a new Selenium/TestNG test in this project. Guides through creating the test class, registering TestNG groups, and updating the relevant test suite XML files.
 ---
 
 # Create a New Selenium Test
@@ -9,9 +9,8 @@ Follow these steps every time a new test is added to this project.
 
 ---
 
-## Project Conventions (always apply)
+## Project Structure
 
-### Package structure
 ```
 src/test/java/com/practicetestautomation/
   pageobjects/          ← one class per page, extends BasePage
@@ -22,24 +21,14 @@ src/test/resources/
   ExtentConfigs/        ← Extent Reports config (do not modify)
 ```
 
-### Page Object rules (`pageobjects/`)
-- **Extends `BasePage`** — never inject a raw `WebDriver` anywhere except the constructor.
-- Constructor signature: `public MyPage(WebDriver driver) { super(driver); }`
-- The page exposes a `public void visit()` method that calls `super.visit("<URL>")`.
-- After `visit()`, wait for a landmark element before returning: `waitForElement(TABLE);`
-- All locators are **`private static final By`** fields (or `private By` for dynamic ones).
-- Dynamic locators (e.g. parameterised CSS / XPath) are expressed as private helper methods that return `By`.
-- Never call `driver.findElement(...)` in a test class — only page objects do.
-- Use `BasePage.waitForElement(By)` instead of raw `WebDriverWait` in page objects.
-- Use `BasePage.waitForIsDisplayed(By)` / `waitForIsInvisible(By)` for boolean visibility checks.
-- For blocking/polling in page objects, `Thread.sleep` is acceptable only inside `waitForFilterToApply`-style private helpers.
+---
 
-### Test Class rules (`tests/<feature>/`)
+## Test Class Rules (`tests/<feature>/`)
+
 - **Extends `BaseTest`** — never re-declare `WebDriver driver`, `Logger logger`, `ExtentTest testReport`, `setUp()`, or `tearDown()`.
 - Do **not** re-import `ChromeDriver`, `FirefoxDriver`, `@BeforeMethod`, `@AfterMethod`, `@Parameters`, or `ExtentReportManager` in a test class.
 - Use inherited helpers `info(msg)`, `pass(msg)`, `fail(msg)`, `skip(msg)` for logging — do not call `System.out.println` directly.
 - Each test method is annotated `@Test(groups = {"<group1>", ...})`.
-- Standard groups: `smoke`, `regression`, `positive`, `negative`, `<feature>` (e.g. `table`, `exceptions`).
 - Use descriptive, camelCase method names prefixed with `test` or a `tc<N>_` prefix for numbered cases.
 - Parameterised tests use `@Parameters({"param1", ...})` and receive values from the TestNG suite XML.
 - Assertions use `org.testng.Assert` only.
@@ -50,13 +39,10 @@ src/test/resources/
   4. Assert with a descriptive failure message as the third argument.
   5. End with `pass("TC... PASSED – <detail>");`
 
-### BaseTest lifecycle (already provided — do not override)
-| Annotation | What it does |
-|---|---|
-| `@BeforeMethod(alwaysRun=true)` | Instantiates `driver` (chrome/firefox via `@Parameters("browser")`), sets up `logger`, creates `testReport` via `ExtentReportManager`. |
-| `@AfterMethod(alwaysRun=true)` | Calls `driver.quit()`. |
+---
 
-### TestNG Group names (canonical)
+## TestNG Group Names (canonical)
+
 | Group | Meaning |
 |---|---|
 | `smoke` | Fast sanity, run on every commit |
@@ -72,7 +58,6 @@ src/test/resources/
 
 Before writing code, ask the user (use `ask_followup_question` if any of these are unknown):
 - What page / feature is the test for?
-- What is the URL of the page under test?
 - Does a page object for this page already exist?
 - What are the test cases (actions + assertions)?
 - Which TestNG groups should the test belong to?
@@ -82,43 +67,8 @@ Before writing code, ask the user (use `ask_followup_question` if any of these a
 
 ## Step 2 — Create or Update the Page Object
 
-If a new page object is needed:
-1. Create `src/test/java/com/practicetestautomation/pageobjects/<FeatureName>Page.java`.
-2. Follow the Page Object rules above.
-3. Example skeleton:
-
-```java
-package com.practicetestautomation.pageobjects;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
-public class FeatureNamePage extends BasePage {
-
-    private static final String URL = "https://example.com/page";
-
-    // locators — private static final By for fixed, private By-returning methods for dynamic
-    private static final By SOME_ELEMENT = By.id("some-id");
-
-    public FeatureNamePage(WebDriver driver) {
-        super(driver);
-    }
-
-    public void visit() {
-        visit(URL);
-        waitForElement(SOME_ELEMENT);
-    }
-
-    // one method per user action or query; no logic in test classes
-    public void doSomething() {
-        waitForElement(SOME_ELEMENT).click();
-    }
-
-    public boolean isSomethingDisplayed() {
-        return waitForIsDisplayed(SOME_ELEMENT);
-    }
-}
-```
+If a page object is needed, activate the `selenium-page-object` skill and follow its rules to
+create `src/test/java/com/practicetestautomation/pageobjects/<FeatureName>Page.java`.
 
 ---
 
@@ -182,7 +132,5 @@ If the test should also appear in `FullRegressionSuite.xml`, add a `<test>` bloc
 
 ## Step 5 — Verify
 
-After writing all files, remind the user to:
-1. Run the suite with Maven: `mvn test -DsuiteXmlFile=<SuiteName>` (e.g. `mvn test -DsuiteXmlFile=FullRegressionSuite`).
-2. Check the Extent Report at `xml-config-report.html` in the project root.
-3. Confirm that the new test appears in the report and passes.
+After writing all files, remind the user to run the suite with Maven and confirm the new test
+appears in the Extent Report and passes.

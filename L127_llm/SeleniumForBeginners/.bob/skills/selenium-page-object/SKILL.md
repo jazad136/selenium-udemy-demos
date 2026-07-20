@@ -1,6 +1,6 @@
 ---
 name: selenium-page-object
-description: Use when the user wants to create, review, or refactor a page object in this project. Enforces the naming, structure, locator, and API conventions derived from the existing page objects (BasePage, LoginPage, ExceptionsPage, PracticeTablePage, SuccessfulLoginPage).
+description: Use when the user wants to create, review, or refactor a page object in this project. Enforces the naming, structure, locator, and API conventions for page objects in the SeleniumForBeginners project.
 ---
 
 # Page Object Rules — SeleniumForBeginners
@@ -40,8 +40,7 @@ public FeaturePage(WebDriver driver) {
 
 ## 3. URL Constant
 
-- If the page has a fixed URL, declare it as:
-  `private static final String URL = "https://...";`
+- If the page has a fixed URL, declare it as a `private static final String URL` field.
 - Do **not** hard-code the URL string inside `visit()`.
 
 ---
@@ -150,10 +149,8 @@ Never import `ChromeDriver`, `FirefoxDriver`, test annotations (`@Test`, `@Befor
 
 - Do **not** place assertions (`Assert.*`) in page objects.
 - Do **not** call `super.getCurrentUrl()` or `super.getPageSource()` redundantly if `BasePage`
-  already provides them (see `SuccessfulLoginPage` — the overrides there add no value and should be
-  avoided in new code).
-- Do **not** duplicate methods with slightly different names for the same action (e.g.
-  `enterFoodInRow1` and `enterRow1Text` — pick one clear name).
+  already provides them.
+- Do **not** duplicate methods with slightly different names for the same action — pick one clear name.
 - Do **not** add `public` to locator fields.
 - Do **not** create a separate `WebDriverWait` field unless the page genuinely requires a timeout
   that differs from the 10-second default in `BasePage`.

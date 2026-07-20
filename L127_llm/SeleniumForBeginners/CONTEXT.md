@@ -84,6 +84,43 @@ mvn test -DsuiteXmlFile=NegativeTestSuite
 - No WebDriverManager dependency; Chrome and Firefox binaries + drivers must be available on the system `PATH`.
 - `doesnotcompile/TestSeleniumDemo.java` is intentionally excluded from the build (lives outside `src/`).
 
+## Coding Rules
+
+Two Bob skills enforce the project's coding conventions. Always activate the relevant skill before
+writing or modifying code in the paths below.
+
+### Page Objects — `src/test/java/com/practicetestautomation/pageobjects/`
+Skill: `.bob/skills/selenium-page-object/SKILL.md`
+
+Key rules:
+- Every page object class extends `BasePage` and is named `<Feature>Page`.
+- Constructor signature: `public FeaturePage(WebDriver driver) { super(driver); }`
+- Fixed URL stored as `private static final String URL`; never hard-coded inside `visit()`.
+- `public void visit()` calls `super.visit(URL)` then waits for a landmark element.
+- Locators: `private static final By NAME` (fixed) or a `private By name(…)` method (dynamic).
+- Use `BasePage` wait helpers (`waitForElement`, `waitForIsDisplayed`, `waitForIsInvisible`) — no raw `WebDriverWait` unless a non-standard timeout is needed.
+- No assertions (`Assert.*`) in page objects.
+- No `WebElement` fields or raw `driver.findElement` calls exposed to test classes.
+- `Thread.sleep` only inside `private waitForXxxToApply()` helpers.
+
+### Test Classes — `src/test/java/com/practicetestautomation/tests/<feature>/`
+Skill: `.bob/skills/selenium-new-test/SKILL.md`
+
+Key rules:
+- Every test class extends `BaseTest`; never re-declare `driver`, `logger`, `setUp()`, or `tearDown()`.
+- Do not import `ChromeDriver`, `FirefoxDriver`, `@BeforeMethod`, `@AfterMethod`, or `ExtentReportManager`.
+- Log with inherited helpers: `info(msg)`, `pass(msg)`, `fail(msg)`, `skip(msg)`.
+- Annotate each test method `@Test(groups = {"smoke", "regression", …})`.
+- Assertions use `org.testng.Assert` only; always supply a descriptive failure message.
+- Follow Arrange → Act → Assert; end every passing test with `pass("TCN PASSED – <detail>")`.
+
+### Suite XML — `src/test/resources/TestSuites/`
+- Add a `<test>` block (with `<parameter name="browser" value="chrome"/>`) for each new test class.
+- Run by group via `<groups><run><include name="…"/></run></groups>` or pin methods with `<methods><include name="…"/>`.
+- Register new tests in `FullRegressionSuite.xml` in addition to any feature-specific suite.
+
+---
+
 ## Tested URLs
 | Page | URL |
 |---|---|
