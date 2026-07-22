@@ -7,11 +7,6 @@
         <listener class-name="com.practicetestautomation.listener.TestInfoListener"/>
     </listeners>
     <test name="Incorrect Username Test">
-        <parameter name="browser" value="chrome"/>
-        <!--<parameter name="username" value="incorrectUser"></parameter>-->
-        <!--<parameter name="password" value="Password123"></parameter>-->
-        <!--<parameter name="expectedErrorMessage" value="Your username is invalid!"></parameter>-->
-        <parameter name="testName" value="Negative Login Test"></parameter>
         <classes>
             <class name="com.practicetestautomation.tests.login.LoginTest">
                 <methods>
@@ -22,10 +17,6 @@
     </test>
     <test name="Incorrect Password Test">
         <parameter name="browser" value="firefox"/>
-        <!--<parameter name="username" value="student"></parameter>-->
-        <!--<parameter name="password" value="incorrectPassword"></parameter>-->
-        <!--<parameter name="expectedErrorMessage" value="Your password is invalid!"></parameter>-->
-        <parameter name="testName" value="Negative Login Test (Incorrect Password)"></parameter>
         <classes>
             <class name="com.practicetestautomation.tests.login.LoginTest">
                 <methods>
