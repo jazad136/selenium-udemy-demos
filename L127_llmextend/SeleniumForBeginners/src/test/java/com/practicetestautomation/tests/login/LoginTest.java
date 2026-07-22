@@ -50,9 +50,8 @@ public class LoginTest extends BaseTest {
     @Test(groups = {"negative", "regression"},
             dataProviderClass = TestDataProviders.class, 
             dataProvider = "dataProviderLoginSuite")
-    public void negativeLoginTest(String username, String password, String expectedErrorMessage, String testName) {
+    public void negativeLoginTest(String username, String password, String expectedErrorMessage) {
         // Open page
-        testReport = extent.createTest(testName != null ? testName : "Login Test");
         info("Starting negativeLoginTest");
         LoginPage loginPage = new LoginPage(driver);
         loginPage.visit();

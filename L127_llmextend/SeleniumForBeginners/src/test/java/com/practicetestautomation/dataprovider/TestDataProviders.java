@@ -19,15 +19,15 @@ public class TestDataProviders {
             data[0][0] = "Positive Login Test";
         }
         if(method.getName().toUpperCase().equals("NEGATIVELOGINTEST")) { 
-            data = new Object[2][4];
+            data = new Object[2][3];
             data[0][0] = "incorrectUser";
             data[0][1] = "Password123";
             data[0][2] = "Your username is invalid!";
-            data[0][3] = "Negative Login Test (Incorrect User)";
+//            data[0][3] = "Negative Login Test (Incorrect User)";
             data[1][0] = "student";
             data[1][1] = "incorrectPassword";
             data[1][2] = "Your password is invalid!";
-            data[1][3] = "Negative Login Test (Incorrect Password)";
+//            data[1][3] = "Negative Login Test (Incorrect Password)";
         }
         return data;
     }

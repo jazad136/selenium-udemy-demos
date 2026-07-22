@@ -4,12 +4,12 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.practicetestautomation.tests.exceptions.ExceptionsTest;
 import com.practicetestautomation.testsetup.ExtentReportManager;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
@@ -24,7 +24,7 @@ public class BaseTest {
     
     @Parameters({"browser", "testName"})
     @BeforeMethod(alwaysRun=true)
-    public void setUp(@Optional("chrome") String browser, @Optional("testName") String testName) {
+    public void setUp(@Optional("chrome") String browser, @Optional("testName") String testName, ITestResult res) {
         logger = Logger.getLogger(ExceptionsTest.class.getName());
         logger.setLevel(Level.INFO);
         
@@ -41,6 +41,7 @@ public class BaseTest {
         }
         extent = ExtentReportManager.getReporter();
         testReport = extent.createTest(testName != null && !testName.equals("testName") ? testName : "Login Test");
+        res.setAttribute("reporterObject", testReport);
     }
     
     @AfterMethod(alwaysRun=true)

@@ -2,6 +2,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
 <suite name="Practice Table Test Suite" verbose="1">
+    <listeners>
+        <listener class-name="com.practicetestautomation.listener.TestInfoListener"/>
+    </listeners>
     <test name="Practice Table Tests - Chrome">
         <parameter name="browser" value="chrome"/>
         <classes>
