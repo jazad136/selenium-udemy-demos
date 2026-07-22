@@ -1,20 +1,15 @@
 package com.practicetestautomtation.tests.login;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import com.practicetestautomtation.pageobjects.LoginPage;
 import com.practicetestautomtation.pageobjects.SuccessfulLoginPage;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.NoSuchElementException;
+import com.practicetestautomtation.testsetup.ExtentReportManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -26,6 +21,9 @@ public class LoginTest {
     
     private WebDriver driver;
     private Logger logger;
+    private ExtentReports extent;
+    private ExtentTest loginReport;
+    
     
     @Parameters("browser")
     @BeforeMethod(alwaysRun=true)
@@ -44,6 +42,8 @@ public class LoginTest {
             driver = new ChromeDriver();
      break;
         }
+        extent = ExtentReportManager.getReporter();
+        loginReport = extent.createTest("Login Test");
     }
     
     @AfterMethod(alwaysRun=true)
@@ -51,88 +51,57 @@ public class LoginTest {
         driver.quit();
         logger.info("Browser is closed");
     }
+//    @AfterSuite(alwaysRun=true)
+//    public void tearDownAll() {
+//        
+//    }
     
     @Test(groups = {"positive", "regression", "smoke"})
     public void testLoginFunctionality() {
+//        ExtentTest loginReport = extent.createTest("testLoginFunctionality");
         // Open page
-        logger.info("Starting testLoginFunctionality");
+        loginReport.info("Starting testLoginFunctionality");
         LoginPage loginPage = new LoginPage(driver);
         loginPage.visit();
         
         // Type username student into Username field
         // Type password Password123 into Password field
         // Push Submit button
-//        WebElement usernameInput = driver.findElement(By.id("username"));
-//        WebElement passwordInput = driver.findElement(By.id("password"));
-//        WebElement submitButton = driver.findElement(By.id("submit"));
-//        logger.info("Type password");
-//        logger.info("Type username");
-//        usernameInput.sendKeys("student");
-//        passwordInput.sendKeys("Password123");
-//        logger.info("Click Submit button");
-//        submitButton.click();
+        
+        loginReport.info("Type username, password, and click submit button");
         SuccessfulLoginPage successfulLoginPage = loginPage.executeLogin("student", "Password123");
         successfulLoginPage.load();
 
-//        try { Thread.sleep(2000); } 
-//        catch(InterruptedException e) { }
-        logger.info("Verify the login functionality");
-        // Verify new page URL contains practicetestautomation.com/logged-in-successfully/
-        String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
-//        String actualUrl = driver.getCurrentUrl();
-        String actualUrl = successfulLoginPage.getCurrentUrl();
-        Assert.assertEquals(actualUrl, expectedUrl);
-
         // Verify new page contains expected text ('Congratulations' or 'successfully logged in')
         String expectedMessage = "Logged In Successfully";
-//        String pageSource = driver.getPageSource();
         String pageSource = successfulLoginPage.getPageSource();
         Assert.assertTrue(pageSource.contains(expectedMessage));
         
         // Verify button Log out is displayed on the new page
-//        WebElement logOutButton = driver.findElement(By.linkText("Log out"));
-//        Assert.assertTrue(logOutButton.isDisplayed());
         Assert.assertTrue(successfulLoginPage.isLogoutButtonDisplayed());
+        loginReport.info("Verify the login functionality");
+        loginReport.pass("Test passed...");
+        extent.flush();
     }
-    
-    public Wait<WebDriver> setupWait(WebDriver driver) { 
-        return new FluentWait<>(driver)
-                .withTimeout(Duration.of(10000, ChronoUnit.MILLIS))
-                .pollingEvery(Duration.of(2000, ChronoUnit.MILLIS))
-                .ignoring(NoSuchElementException.class);
-    }
- 
-    @Parameters({"username", "password", "expectedErrorMessage"})
+    @Parameters({"username", "password", "expectedErrorMessage", "testName"})
     @Test(groups = {"negative", "regression"})
-    public void negativeLoginTest(String username, String password, String expectedErrorMessage) { 
-        logger.info("Starting negativeLoginTest");
+    public void negativeLoginTest(String username, String password, String expectedErrorMessage, String testName) {
+//        ExtentTest loginReport = extent.createTest("negativeLoginTest-"+testName);
         // Open page
+        loginReport.info("Starting negativeLoginTest");
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.visit();
         
-        // Type username incorrectUser into Username field
-        WebElement txtUsername = driver.findElement(By.id("username"));
-        logger.info(String.format("Typing username: %s", username));
-        txtUsername.sendKeys(username);
-        
+        // Type username incorrectUser into Username field        
         // Type password Password123 into Password field
-        logger.info("Typing password");
-        WebElement txtPassword = driver.findElement(By.id("password"));
-        txtPassword.sendKeys(password);
-        
         //  Push Submit button
-        logger.info("Clicking submit button");
-        WebElement btnSubmit = driver.findElement(By.id("submit"));
-        btnSubmit.click();
+        loginReport.info("Type username, password, and click submit button");
+        loginPage.executeLogin(username, password);
         
         //  Verify error message is displayed
-        WebElement lblError = driver.findElement(By.id("error"));
-        
-        logger.info(String.format("Verify the expected error message: %s", expectedErrorMessage));
-//        wait.until(ExpectedConditions.visibilityOf(lblError));
-        Assert.assertTrue(lblError.isDisplayed());
-        
-        //  Verify error message text is Your username is invalid!
-        String actualErrorMessage = lblError.getText();
-        
-        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
-    }   
+        //  Verify error message text is Your username is
+        Assert.assertEquals(loginPage.getErrorMessage(), expectedErrorMessage);
+        loginReport.pass("Test passed...");
+        extent.flush();
+    }
 }

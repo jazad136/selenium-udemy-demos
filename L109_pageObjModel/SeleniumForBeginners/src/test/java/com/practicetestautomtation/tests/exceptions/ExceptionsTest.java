@@ -89,7 +89,7 @@ public class ExceptionsTest {
         
         // Type text into the second input field
         String inputText = "Hamburger";
-        row2InputField.sendKeys(inputText);
+//        row2InputField.sendKeys(inputText);
         // Push Save button using locator By.name(“Save”)
         WebElement saveButton = driver.findElement(By.xpath("//div[@id='row2']/button[@name='Save']"));
         saveButton.click();
