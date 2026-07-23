@@ -14,6 +14,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
+import org.testng.asserts.SoftAssert;
 
 public class BaseTest {
     
@@ -21,10 +22,16 @@ public class BaseTest {
     protected Logger logger;
     protected ExtentReports extent;
     protected ExtentTest testReport;
+    private String testNameAppend;
+    protected SoftAssert softAssert;
     
-    @Parameters({"browser", "testName"})
+    @Parameters({"browser", "testName", "testAppend"})
     @BeforeMethod(alwaysRun=true)
-    public void setUp(@Optional("chrome") String browser, @Optional("testName") String testName, ITestResult res) {
+    public void setUp(
+            @Optional("chrome") String browser, 
+            @Optional("testName") String testName, 
+            @Optional("testAppend") String testAppend, 
+            ITestResult testResult) {
         logger = Logger.getLogger(ExceptionsTest.class.getName());
         logger.setLevel(Level.INFO);
         
@@ -40,8 +47,8 @@ public class BaseTest {
      break;
         }
         extent = ExtentReportManager.getReporter();
-        testReport = extent.createTest(testName != null && !testName.equals("testName") ? testName : "Login Test");
-        res.setAttribute("reporterObject", testReport);
+        testNameAppend = testAppend != null && !testAppend.equals("testAppend") ? testAppend : "";
+        softAssert = new SoftAssert();
     }
     
     @AfterMethod(alwaysRun=true)
@@ -68,5 +75,9 @@ public class BaseTest {
     public void skip(String msg) { 
         System.out.println(msg);
         testReport.skip(msg);
+    }
+    
+    public String getTestNameAppend() { 
+        return !testNameAppend.isBlank() ? testNameAppend + " " : ""; 
     }
 }
