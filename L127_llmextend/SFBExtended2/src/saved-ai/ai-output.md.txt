@@ -1,0 +1,15 @@
+|Section	                | Purpose                                                                                                                                       |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|What This Is	            | One-sentence orientation learning project, two URLs, POM pattern                                                                              |
+|Tech Stack	                | Exact versions frompom.xml; no guessing needed in future sessions                                                                             |
+|Project Structure	        | Annotated file tree covering every meaningful source file                                                                                     |
+|Key Design Decisions	    | How BasePage/BaseTestwork, browser parameterisation, ExtentReports singleton, suite switching                                                  |
+|Test Credentials	        | Hardcoded in test code  saves an AI from searching for them                                                                                   |
+|How to Run	                | Exact Maven commands + all available suite names                                                                                              | 
+|Known Issues	            | Three real problems found during review: missingExceptionsTest3, duplicate exception test classes, and the cosmetic ExtentReports naming bug  |
+|Tested URLs	            | Quick lookup without reading page object files                                                                                                |
+
+#  | Test Case  | Assertion | Result
+TC1| Language filter → Java|All visible rows have Language = "Java"|✅ PASSED — 6 rows
+TC2| Level filter → Beginner only|All visible rows have Level = "Beginner"|✅ PASSED — 5 rows
+TC3| Min enrollments → 10,000+|All visible rows have enrollments ≥ 10,000 (numeric)|✅ PASSED — 4 rows
