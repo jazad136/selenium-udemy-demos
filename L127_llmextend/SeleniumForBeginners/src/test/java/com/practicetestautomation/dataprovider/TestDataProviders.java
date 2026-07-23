@@ -51,4 +51,32 @@ public class TestDataProviders {
         }
         return data;
     }
+    @DataProvider
+    public Object[][] dataProviderExceptionSuite(Method method) {
+        // separate data for each test
+        System.out.println("Test method name: " + method.getName());
+        
+        Object data[][] = null;
+        if(method.getName().toUpperCase().equals("TESTNOSUCHELEMENTEXCEPTION")) { 
+            data = new Object[1][1];
+            data[0][0] = "Test case 1: NoSuchElementException";
+        }
+        else if(method.getName().toUpperCase().equals("TESTELEMENTNOTINTERACTIBLEEXCEPTION")) { 
+            data = new Object[1][1];
+            data[0][0] = "Test case 2: ElementNotInteractableException";
+        }
+        else if(method.getName().toUpperCase().equals("TESTTIMEOUTEXCEPTION")) { 
+            data = new Object[1][1];
+            data[0][0] = "Test case 2: ElementNotInteractableException";
+        }
+        else if(method.getName().toUpperCase().equals("TESTINVALIDELEMENTSTATEEXCEPTION")) { 
+            data = new Object[1][1];
+            data[0][0] = "Test case 3: Min enrollments --> 10,000+";
+        }
+        else if(method.getName().toUpperCase().equals("TESTSTALEELEMENTEXCEPTION")) { 
+            data = new Object[1][1];
+            data[0][0] = "Test case 3: Min enrollments --> 10,000+";
+        }
+        return data;
+    }
 }
