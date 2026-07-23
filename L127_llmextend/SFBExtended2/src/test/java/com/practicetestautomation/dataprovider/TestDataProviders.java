@@ -9,6 +9,30 @@ import org.testng.annotations.DataProvider;
  */
 public class TestDataProviders {
     @DataProvider
+    public Object[][] dataProviderLoginFactorySuite(Method method) {
+        // separate data for each test
+        System.out.println("Test method name: " + method.getName());
+        
+        Object data[][] = null;
+        if(method.getName().toUpperCase().equals("TESTLOGINFUNCTIONALITY")) { 
+            data = new Object[1][1];
+            data[0][0] = "Positive Login Test";
+        }
+        if(method.getName().toUpperCase().equals("NEGATIVELOGINTEST")) { 
+            data = new Object[2][4];
+            data[0][0] = "incorrectUser";
+            data[0][1] = "Password123";
+            data[0][2] = "Your username is invalid!";
+            data[0][3] = "Negative Login Test (Incorrect User)";
+            data[1][0] = "student";
+            data[1][1] = "incorrectPassword";
+            data[1][2] = "Your password is invalid!";
+            data[1][3] = "Negative Login Test (Incorrect Password)";
+        }
+        return data;
+    }
+    
+    @DataProvider
     public Object[][] dataProviderLoginSuite(Method method) {
         // separate data for each test
         System.out.println("Test method name: " + method.getName());

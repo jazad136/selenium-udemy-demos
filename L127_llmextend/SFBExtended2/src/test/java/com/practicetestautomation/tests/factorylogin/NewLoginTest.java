@@ -1,24 +1,32 @@
-package com.practicetestautomation.tests.login;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.practicetestautomation.tests.factorylogin;
 
 import com.aventstack.extentreports.Status;
 import com.practicetestautomation.dataprovider.TestDataProviders;
 import com.practicetestautomation.pageobjects.LoginPage;
 import com.practicetestautomation.pageobjects.SuccessfulLoginPage;
-import com.practicetestautomation.tests.BaseTest;
 import org.testng.Assert;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-public class LoginTest extends BaseTest {
+/**
+ *
+ * @author JonathanSaddler
+ */
+public class NewLoginTest extends LoginTestFactory {
+    public NewLoginTest() { } 
+    @Factory(dataProviderClass = LoginTestFactory.class, dataProvider="testFactoryDpMethod") 
+    public NewLoginTest(String browser, String testNamePrepend) { 
+        super(browser, testNamePrepend);
+    }
     
-    @Test(groups = {"positive", "regression", "smoke"}, 
-            dataProviderClass = TestDataProviders.class, 
-            dataProvider = "dataProviderLoginSuite")
-    public void testLoginFunctionality(String testName) {
-        String fullTestName = createFullTestName(testName);
-        testReport = extent.createTest(fullTestName);
-//        testResult.setAttribute("reporterObject", testReport);
+    @Test
+    public void testLoginFunctionality() {
         // Open page
-        info("Starting " + testName);
+        info("Starting " + getFullTestName());
         LoginPage loginPage = new LoginPage(driver);
         loginPage.visit();
         
@@ -40,10 +48,8 @@ public class LoginTest extends BaseTest {
         softAssert.assertTrue(successfulLoginPage.isLogoutButtonDisplayed());
         
         softAssert.assertAll();
-        testReport.log(Status.INFO, "Test Case Name : " + fullTestName);
-        testReport.pass("Reached the end.");
     }
-//    @Parameters({"username", "password", "expectedErrorMessage", "testName"})
+    
     @Test(groups = {"negative", "regression"},
             dataProviderClass = TestDataProviders.class, 
             dataProvider = "dataProviderLoginSuite")
@@ -51,11 +57,11 @@ public class LoginTest extends BaseTest {
             String username, 
             String password, 
             String expectedErrorMessage,
-            String testName) {
-        String fullTestName = createFullTestName(testName);
-        testReport = extent.createTest(fullTestName);
+            String testEnd) {
+        this.testEnd = "";
+        String fullTestName = getFullTestName();
         // Open page
-        info("Starting negativeLoginTest");
+        info("Starting " + getFullTestName());
         LoginPage loginPage = new LoginPage(driver);
         loginPage.visit();
         
@@ -71,9 +77,5 @@ public class LoginTest extends BaseTest {
         Assert.assertEquals(loginPage.getErrorMessage(), expectedErrorMessage);
         testReport.log(Status.INFO, "Test Case Name : " + fullTestName);
         testReport.pass("Reached the end.");
-    }
-    protected String createFullTestName(String inputTestName) { 
-        String endTestName = inputTestName != null && !inputTestName.equals("testName") ? inputTestName : "Login Test";
-        return getTestNameAppend() + endTestName;
     }
 }

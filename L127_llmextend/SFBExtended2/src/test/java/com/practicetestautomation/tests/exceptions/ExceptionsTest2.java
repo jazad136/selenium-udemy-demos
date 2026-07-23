@@ -122,7 +122,7 @@ public class ExceptionsTest2 extends BaseTest {
         infoFormat("Test Case Name %s ", fullTestName);
         softAssert.assertAll();
     }
-    private String createFullTestName(String inputTestName) { 
+    protected String createFullTestName(String inputTestName) { 
         String endTestName = inputTestName != null && !inputTestName.equals("testName") ? inputTestName : "Login Test";
         return getTestNameAppend() + endTestName;
     }
